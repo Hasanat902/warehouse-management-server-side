@@ -61,6 +61,23 @@ async function run() {
             const result = await productCollection.insertOne(newProduct);
             res.send(result);
         })
+
+        // get my items api
+        app.get('/myItems', async(req, res) => {
+            const email = req.query.email;
+            const query = {email: email};
+            const cursor = productCollection.find(query);
+            const products = await cursor.toArray();
+            res.send(products);
+        })
+
+        app.delete('/myItems/:id', async(req, res) => {
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)};
+            const result = await productCollection.deleteOne(query);
+            res.send(result);
+        })
+
     }
     finally {
 
